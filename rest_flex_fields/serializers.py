@@ -1,5 +1,6 @@
 import copy
 import importlib
+import inspect
 from typing import List, Optional, Tuple
 
 from rest_framework import serializers
@@ -123,6 +124,9 @@ class FlexFieldsSerializerMixin(object):
         else:
             serializer_class = field_options
             settings = {}
+
+        if inspect.isfunction(serializer_class):
+            serializer_class = serializer_class()
 
         if type(serializer_class) == str:
             serializer_class = self._get_serializer_class_from_lazy_string(
